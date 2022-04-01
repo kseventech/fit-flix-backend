@@ -2,6 +2,37 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type UserInfo {
+  uid: String!
+  displayName: String!
+  email: String!
+  photoURL: String!
+  providerId: String!
+  phoneNumber: String!
+}
+
+type UserMetadata {
+  creationTime: String!
+  lastSignInTime: String!
+  lastRefreshTime: String
+}
+
+type UserRecord {
+  uid: String!
+  email: String
+  emailVerified: Boolean!
+  displayName: String
+  photoURL: String
+  phoneNumber: String
+  disabled: Boolean!
+  metadata: UserMetadata!
+  providerData: [UserInfo!]!
+}
+
 type Query {
-  gethello: String!
+  getHello: String!
+}
+
+type Mutation {
+  createFirebaseUser(email: String!, password: String!): UserRecord!
 }
