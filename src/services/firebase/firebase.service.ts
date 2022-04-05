@@ -19,7 +19,7 @@ export class FirebaseAuthService {
       const user = await this.admin.auth().createUser({ email, password, emailVerified: false });
       return user;
     } catch (error) {
-      throw new BadRequestException(`Firebase user not created`);
+      throw new BadRequestException(`Firebase user allready exists`);
     }
   }
 }

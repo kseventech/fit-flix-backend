@@ -1,20 +1,15 @@
 import { Strategy } from 'passport-strategy';
 import { JwtFromRequestFunction } from 'passport-jwt';
 import { Request } from 'express';
-import { Inject, UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import { FirebaseAuthStrategyOptions } from 'src/common/interface/firebase-options.intefrace';
-import { FirebaseAdminSDK } from 'src/common/interface/firebase-sdk.type';
 import { FirebaseUser } from 'src/common/interface/firebase-admin.interface';
-import { FIREBASE_ADMIN_INJECT } from 'src/common/constants';
+import * as admin from 'firebase-admin';
 
 export class FirebaseAuthStrategy extends Strategy {
   checkRevoked = false;
 
-  constructor(
-    options: FirebaseAuthStrategyOptions,
-    private extractor: JwtFromRequestFunction,
-    @Inject(FIREBASE_ADMIN_INJECT) private readonly admin: FirebaseAdminSDK,
-  ) {
+  constructor(options: FirebaseAuthStrategyOptions, private extractor: JwtFromRequestFunction) {
     super();
     if (!options.extractor) {
       throw new Error('\n Extractor is not a function. You should provide an extractor.');
@@ -31,7 +26,7 @@ export class FirebaseAuthStrategy extends Strategy {
     try {
       const idToken = this.extractor(req);
       if (!idToken) throw new Error('Authentication token not found');
-      const data = await this.admin.auth().verifyIdToken(idToken, this.checkRevoked);
+      const data = await admin.auth().verifyIdToken(idToken, this.checkRevoked);
       await this.validateDecodedIdToken(data);
     } catch (error) {
       req.next(new UnauthorizedException(error.message));
