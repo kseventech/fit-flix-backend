@@ -8,14 +8,14 @@ import { getAuth, verifyPasswordResetCode, applyActionCode } from 'firebase/auth
 export class UserController {
   constructor(@Inject(FIREBASE_ADMIN_INJECT) private readonly admin: FirebaseAdminSDK) {}
 
-  @Get('generate-email-verification-link/:id')
-  async generateEmailVerificationLink(@Param('id') id: string) {
-    return await this.admin.auth().generateEmailVerificationLink(id);
+  @Get('generate-email-verification-link/:email')
+  async generateEmailVerificationLink(@Param('email') email: string) {
+    return await this.admin.auth().generateEmailVerificationLink(email);
   }
 
-  @Get('generate-password-reset-link/:id')
-  async generatePasswordResetLink(@Param('id') id: string) {
-    return await this.admin.auth().generatePasswordResetLink(id);
+  @Get('generate-password-reset-link/:email')
+  async generatePasswordResetLink(@Param('email') email: string) {
+    return await this.admin.auth().generatePasswordResetLink(email);
   }
 
   @Get(':id')
