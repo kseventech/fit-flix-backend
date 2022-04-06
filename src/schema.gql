@@ -31,6 +31,7 @@ type UserRecord {
 
 type Query {
   getHello: String!
+  me: UserRecord!
 }
 
 type Mutation {
