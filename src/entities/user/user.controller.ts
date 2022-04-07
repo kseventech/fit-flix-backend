@@ -1,12 +1,15 @@
-import { BadRequestException, Controller, Get, Inject, Param, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Inject, Param, Post, Query, Res } from '@nestjs/common';
 import { FIREBASE_ADMIN_INJECT } from 'src/common/constants';
 import { FirebaseAdminSDK } from 'src/common/interface/firebase-sdk.type';
 import { initializeApp } from 'firebase/app';
-import { getAuth, verifyPasswordResetCode, applyActionCode } from 'firebase/auth';
+import { getAuth, verifyPasswordResetCode, applyActionCode, confirmPasswordReset } from 'firebase/auth';
+import { Response } from 'express';
 
 @Controller('usermgmt')
 export class UserController {
   constructor(@Inject(FIREBASE_ADMIN_INJECT) private readonly admin: FirebaseAdminSDK) {}
+
+  auth = getAuth(initializeApp({ apiKey: process.env.FIREBASE_API_KEY }));
 
   @Get('generate-email-verification-link/:email')
   async generateEmailVerificationLink(@Param('email') email: string) {
@@ -28,18 +31,27 @@ export class UserController {
     @Query('mode') mode: string,
     @Query('oobCode') actionCode: string,
     @Query('continueUrl') continueUrl: string,
+    @Res() res: Response,
   ) {
-    const config = { apiKey: process.env.FIREBASE_API_KEY };
-    const app = initializeApp(config);
-    const auth = getAuth(app);
     switch (mode) {
       case 'resetPassword':
-        return this.handleResetPassword(auth, actionCode, continueUrl);
+        return res.render('reset-password', { actionCode });
       case 'verifyEmail':
-        await this.handleVerifyEmail(auth, actionCode, continueUrl);
+        await this.handleVerifyEmail(this.auth, actionCode, continueUrl);
         return 'email verified';
       default:
         throw new BadRequestException('Query Param [mode] must be [resetPassword] or [verifyEmail]');
+    }
+  }
+
+  @Post()
+  async confirmPasswordReset(@Body() body: any) {
+    try {
+      await confirmPasswordReset(this.auth, body.actionCode, body.newPassword);
+    } catch (error) {
+      throw new BadRequestException(
+        'Error occurred during confirmation. The code might have expired or the password is too weak.',
+      );
     }
   }
 
