@@ -10,6 +10,8 @@ import * as admin from 'firebase-admin';
 import dotenv from 'dotenv';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './entities/user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import ORMConfig from '../ormconfig';
 
 dotenv.config({});
 
@@ -34,6 +36,7 @@ dotenv.config({});
     }),
     AuthModule,
     UserModule,
+    TypeOrmModule.forRoot(ORMConfig),
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
