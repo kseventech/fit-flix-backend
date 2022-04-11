@@ -2,7 +2,13 @@ import { BadRequestException, Body, Controller, Get, Inject, Param, Post, Query,
 import { FIREBASE_ADMIN_INJECT } from 'src/common/constants';
 import { FirebaseAdminSDK } from 'src/common/interface/firebase-sdk.type';
 import { initializeApp } from 'firebase/app';
-import { getAuth, verifyPasswordResetCode, applyActionCode, confirmPasswordReset } from 'firebase/auth';
+import {
+  getAuth,
+  verifyPasswordResetCode,
+  applyActionCode,
+  confirmPasswordReset,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { Response } from 'express';
 
 @Controller('usermgmt')
@@ -19,6 +25,11 @@ export class UserController {
   @Get('generate-password-reset-link/:email')
   async generatePasswordResetLink(@Param('email') email: string) {
     return await this.admin.auth().generatePasswordResetLink(email);
+  }
+
+  @Get('idToken/:email')
+  async getIdToken(@Param('email') email: string) {
+    return await signInWithEmailAndPassword(this.auth, email, 'Test1234!');
   }
 
   @Get(':id')
