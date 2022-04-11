@@ -4,6 +4,7 @@ import { UserRecord } from './dto/user-record';
 import { UseGuards } from '@nestjs/common';
 import { FirebaseGuard } from 'src/auth/guards/firebase-auth.guard';
 import { User } from './entity/user.entity';
+import { UserGuard } from 'src/auth/guards/firebase-user.guard';
 
 @Resolver()
 export class UserResolver {
@@ -14,8 +15,8 @@ export class UserResolver {
     return this.userService.createFirebaseUser(email, password);
   }
 
-  @UseGuards(FirebaseGuard)
-  @Query(() => UserRecord, { name: 'me' })
+  @UseGuards(UserGuard)
+  @Query(() => User, { name: 'me' })
   getOne(@Context() context: any) {
     return context.req.user;
   }
