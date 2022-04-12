@@ -44,25 +44,19 @@ export class UserController {
     @Query('continueUrl') continueUrl: string,
     @Res() res: Response,
   ) {
-    switch (mode) {
-      case 'resetPassword':
-        console.log('in reset password handler');
-        return res.render('reset-password', { actionCode });
-      case 'verifyEmail':
-        console.log('in verify email handler');
-        await this.handleVerifyEmail(this.auth, actionCode, continueUrl);
-        return 'email verified';
-      default:
-        throw new BadRequestException('Query Param [mode] must be [resetPassword] or [verifyEmail]');
+    if (mode === 'resetPassword') {
+      return res.render('reset-password', { actionCode });
+    }
+    if (mode === 'verifyEmail') {
+      await this.handleVerifyEmail(this.auth, actionCode, continueUrl);
+      return 'email verified';
     }
   }
 
   @Post()
   async confirmPasswordReset(@Body() body: any) {
-    console.log('in confirmPasswordReset method');
     try {
       await confirmPasswordReset(this.auth, body.actionCode, body.newPassword);
-      console.log('password restart');
       return 'password restarted';
     } catch (error) {
       throw new BadRequestException(
