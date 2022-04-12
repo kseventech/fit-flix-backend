@@ -46,8 +46,10 @@ export class UserController {
   ) {
     switch (mode) {
       case 'resetPassword':
+        console.log('in reset password handler');
         return res.render('reset-password', { actionCode });
       case 'verifyEmail':
+        console.log('in verify email handler');
         await this.handleVerifyEmail(this.auth, actionCode, continueUrl);
         return 'email verified';
       default:
