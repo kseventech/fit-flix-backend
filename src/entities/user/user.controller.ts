@@ -57,8 +57,11 @@ export class UserController {
 
   @Post()
   async confirmPasswordReset(@Body() body: any) {
+    console.log('in confirmPasswordReset method');
     try {
       await confirmPasswordReset(this.auth, body.actionCode, body.newPassword);
+      console.log('password restart');
+      return 'password restarted';
     } catch (error) {
       throw new BadRequestException(
         'Error occurred during confirmation. The code might have expired or the password is too weak.',
