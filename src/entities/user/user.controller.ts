@@ -48,7 +48,9 @@ export class UserController {
       return res.render('reset-password', { actionCode });
     }
     if (mode === 'verifyEmail') {
+      console.log('before handle verify email');
       await this.handleVerifyEmail(this.auth, actionCode, continueUrl);
+      console.log('after handle verify email');
       return 'email verified';
     }
   }
