@@ -51,7 +51,7 @@ export class UserController {
       console.log('before handle verify email');
       await this.handleVerifyEmail(this.auth, actionCode, continueUrl);
       console.log('after handle verify email');
-      return 'email verified';
+      res.send('email verified');
     }
   }
 
