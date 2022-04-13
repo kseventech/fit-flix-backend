@@ -28,8 +28,8 @@ export class UserController {
   }
 
   @Get('idToken/:email')
-  async getIdToken(@Param('email') email: string) {
-    return await signInWithEmailAndPassword(this.auth, email, 'Test1234!');
+  async getIdToken(@Param('email') email: string, @Param('password') password: string) {
+    return await signInWithEmailAndPassword(this.auth, email, password);
   }
 
   @Get(':id')
