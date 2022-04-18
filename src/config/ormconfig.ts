@@ -11,14 +11,14 @@ const ORMConfig: TypeOrmModuleOptions = {
   port: 5432,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  entities: ['dist/src/**/*.entity.js'],
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
+  entities: ['dist/**/*.entity.js'],
+  // extra: {
+  //   ssl: {
+  //     rejectUnauthorized: false,
+  //   },
+  // },
   synchronize: false,
-  migrations: ['dist/src/db/migrations/*.js'],
+  migrations: ['dist/db/migrations/*.js'],
   cli: {
     migrationsDir: 'src/db/migrations',
   },

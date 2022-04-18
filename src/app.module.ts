@@ -11,7 +11,7 @@ import dotenv from 'dotenv';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './entities/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import ORMConfig from '../ormconfig';
+import ORMConfig from './config/ormconfig';
 
 dotenv.config({});
 
