@@ -27,7 +27,7 @@ export class UserController {
     return await this.admin.auth().generatePasswordResetLink(email);
   }
 
-  @Get('idToken/:email')
+  @Get('idToken/:email/:password')
   async getIdToken(@Param('email') email: string, @Param('password') password: string) {
     return await signInWithEmailAndPassword(this.auth, email, password);
   }
