@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExtractJwt } from 'passport-jwt';
@@ -15,6 +15,7 @@ export class UserStrategy extends PassportStrategy(FirebaseAuthStrategy, 'user')
   }
 
   override async validate(payload: any) {
+    if (!payload.email_verified) throw new BadRequestException('Email not verified');
     const user = await this.userRepo.findOne({ firebaseId: payload.uid });
     if (!user) {
       throw new NotFoundException('user not found');
