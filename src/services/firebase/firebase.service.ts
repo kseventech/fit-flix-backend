@@ -22,4 +22,12 @@ export class FirebaseAuthService {
       throw new BadRequestException(`Firebase user allready exists`);
     }
   }
+
+  async setClaims(uid: string, isAdmin: boolean) {
+    try {
+      await this.admin.auth().setCustomUserClaims(uid, { admin: isAdmin });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 }
