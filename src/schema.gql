@@ -2,18 +2,133 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type Category {
   id: String!
   created_at: DateTime
   updated_at: DateTime
-  email: String!
-  firebaseId: String!
+  name: String!
+  status: String!
+  image_url: String!
+  programs: [Program!]!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Tag {
+  id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  name: String!
+  resources: [Resource!]!
+}
+
+type Resource {
+  id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  media_type: String!
+  title: String!
+  url: String!
+  description: String!
+  status: String!
+  provider: String!
+  duration_in_sec: Float!
+  thumb_url: String!
+  type: String!
+  additional_info: JSONObject!
+  intensity_level: Float!
+  programs: [ProgramResource!]!
+  tags: [Tag!]!
+  tranings: [Traning!]!
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type ProgramResource {
+  program_id: String!
+  resource_id: String!
+  playlist_order: String!
+  program: Program!
+  resource: Resource!
+}
+
+type Program {
+  id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  name: String!
+  desc: String!
+  status: String!
+  image_url: String!
+  level: String!
+  duration: String!
+  duration_unit: Float!
+  section: String!
+  category: Category!
+  resources: [ProgramResource!]!
+  programAttempts: [ProgramAttempt!]!
+}
+
+type ProgramAttempt {
+  id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  status: String!
+  start_date: DateTime!
+  user: User!
+  program: Program!
+  tranings: [Traning!]!
+}
+
+type Traning {
+  id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  status: String!
+  start_date: DateTime!
+  resource: Resource!
+  programAttempt: ProgramAttempt!
+  ephemeralProgramAttempt: EphemeralProgramAttempt!
+}
+
+type EphemeralProgramAttempt {
+  id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  account_id: String!
+  status: String!
+  start_date: DateTime!
+  user: User!
+  tranings: [Traning!]!
+}
+
+type User {
+  id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  email: String!
+  firebase_id: String!
+  first_name: String!
+  last_name: String!
+  phone_number: String!
+  status: String!
+  role: String!
+  avatar_url: String!
+  age: Int!
+  height: Float!
+  weight: Float!
+  gender: String!
+  goal_weight: Float!
+  has_rated_app: Boolean!
+  programAttempts: [ProgramAttempt!]!
+  ephemeralProgramAttempts: [EphemeralProgramAttempt!]!
+}
 
 type UserInfo {
   uid: String!
@@ -42,12 +157,70 @@ type UserRecord {
   providerData: [UserInfo!]!
 }
 
+type UsersFindAndCount {
+  results: [User!]
+  count: Int
+}
+
 type Query {
   getHello: String!
   me: User!
+  getUsers(page: Float!, limit: Float!): UsersFindAndCount!
+  supportTicket(email: String!, message: String!, issue: String!): Boolean!
+  categories: [Category!]!
+  category(id: String!): Category!
+  programs: [Program!]!
+  program(id: String!): Program!
+  resource(id: Int!): Resource!
 }
 
 type Mutation {
   createFirebaseUser(email: String!, password: String!): UserRecord!
+  setFirebaseUserRole(uid: String!, role: String!): Boolean!
   createUser: User!
+  removeUser(id: String!): Boolean!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: String!): Category!
+  createProgram(createProgramInput: CreateProgramInput!): Program!
+  updateProgram(updateProgramInput: UpdateProgramInput!): Program!
+  removeProgram(id: String!): Program!
+  createResource(createResourceInput: CreateResourceInput!): Resource!
+  updateResource(updateResourceInput: UpdateResourceInput!): Resource!
+  removeResource(id: Int!): Resource!
+}
+
+input CreateCategoryInput {
+  name: String!
+  status: String!
+  image_url: String!
+}
+
+input UpdateCategoryInput {
+  name: String
+  status: String
+  image_url: String
+  id: String!
+}
+
+input CreateProgramInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateProgramInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: String!
+}
+
+input CreateResourceInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateResourceInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
