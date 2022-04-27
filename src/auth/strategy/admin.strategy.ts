@@ -17,8 +17,8 @@ export class AdminStrategy extends PassportStrategy(FirebaseAuthStrategy, 'admin
   override async validate(payload: any) {
     if (!payload.email_verified) throw new BadRequestException('Email not verified');
     if (!payload.admin) throw new ForbiddenException();
-    const user = await this.userRepo.findOne({ firebaseId: payload.uid });
-    if (!user) throw new NotFoundException('user not found');
+    const user = await this.userRepo.findOne({ firebase_id: payload.uid });
+    if (!user) throw new NotFoundException('Admin data in db not found');
     return user;
   }
 }

@@ -16,8 +16,8 @@ export class UserStrategy extends PassportStrategy(FirebaseAuthStrategy, 'user')
 
   override async validate(payload: any) {
     if (!payload.email_verified) throw new BadRequestException('Email not verified');
-    const user = await this.userRepo.findOne({ firebaseId: payload.uid });
-    if (!user) throw new NotFoundException('user not found');
+    const user = await this.userRepo.findOne({ firebase_id: payload.uid });
+    if (!user) throw new NotFoundException('User data in db not found');
     return user;
   }
 }
