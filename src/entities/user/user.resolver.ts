@@ -30,7 +30,7 @@ export class UserResolver {
     return this.userService.setFirebaseAdmin(uid, role);
   }
 
-  @UseGuards(FirebaseGuard)
+  @UseGuards(UserGuard)
   @Query(() => User, { name: 'me' })
   getOne(@Context() context: any) {
     return context.req.user;
