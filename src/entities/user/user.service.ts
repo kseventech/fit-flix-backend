@@ -4,12 +4,14 @@ import { Role } from 'src/common/enums/account-role.enum';
 import { FirebaseAuthService } from 'src/services/firebase/firebase.service';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
+import { EmailService } from 'src/services/email/email.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private firebaseAuthService: FirebaseAuthService,
     @InjectRepository(User) private userRepo: Repository<User>,
+    private emailService: EmailService,
   ) {}
 
   async createFirebaseUser(email: string, password: string) {
@@ -49,8 +51,6 @@ export class UserService {
   }
 
   async support(email: string, message: string, issue: string) {
-    console.log(email);
-    console.log(message);
-    console.log(issue);
+    return await this.emailService.sendEmail(email, message, issue);
   }
 }

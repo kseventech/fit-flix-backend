@@ -57,7 +57,7 @@ export class UserResolver {
     return this.userService.remove(id);
   }
 
-  @UseGuards(UserGuard)
+  // @UseGuards(UserGuard)
   @Query(() => Boolean, { name: 'supportTicket' })
   support(
     @Args({ name: 'email', nullable: false, type: () => String }) email: string,
