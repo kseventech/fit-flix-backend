@@ -15,6 +15,7 @@ import { CategoryModule } from './entities/category/category.module';
 import { ProgramModule } from './entities/program/program.module';
 import { ResourceModule } from './entities/resource/resource.module';
 import ORMConfig from './config/ormconfig';
+import { EmailModule } from './services/email/email.module';
 
 dotenv.config({});
 
@@ -43,6 +44,7 @@ dotenv.config({});
     CategoryModule,
     ProgramModule,
     ResourceModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
