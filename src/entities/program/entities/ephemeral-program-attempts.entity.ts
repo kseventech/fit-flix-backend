@@ -31,7 +31,7 @@ export class EphemeralProgramAttempt {
 
   @Field(() => User, { nullable: false })
   @ManyToOne(() => User, (user) => user.ephemeralProgramAttempts, { onDelete: 'CASCADE' })
-  user: User;
+  account: User;
 
   @Field(() => [Traning], { nullable: false })
   @OneToMany(() => Traning, (traning) => traning.ephemeralProgramAttempt, { onDelete: 'CASCADE' })
