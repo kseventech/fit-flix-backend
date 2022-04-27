@@ -54,6 +54,8 @@ type ProgramResource {
   program_id: String!
   resource_id: String!
   playlist_order: String!
+  created_at: DateTime
+  updated_at: DateTime
   program: Program!
   resource: Resource!
 }
@@ -81,7 +83,7 @@ type ProgramAttempt {
   updated_at: DateTime
   status: String!
   start_date: DateTime!
-  user: User!
+  account_id: User!
   program: Program!
   tranings: [Traning!]!
 }
@@ -98,13 +100,12 @@ type Traning {
 }
 
 type EphemeralProgramAttempt {
-  id: String!
-  created_at: DateTime
-  updated_at: DateTime
   account_id: String!
   status: String!
   start_date: DateTime!
-  user: User!
+  created_at: DateTime
+  updated_at: DateTime
+  account: User!
   tranings: [Traning!]!
 }
 
@@ -114,18 +115,18 @@ type User {
   updated_at: DateTime
   email: String!
   firebase_id: String!
-  first_name: String!
-  last_name: String!
-  phone_number: String!
-  status: String!
+  first_name: String
+  last_name: String
+  phone_number: String
+  status: String
   role: String!
-  avatar_url: String!
-  age: Int!
-  height: Float!
-  weight: Float!
-  gender: String!
-  goal_weight: Float!
-  has_rated_app: Boolean!
+  avatar_url: String
+  age: Int
+  height: Float
+  weight: Float
+  gender: String
+  goal_weight: Float
+  has_rated_app: Boolean
   programAttempts: [ProgramAttempt!]!
   ephemeralProgramAttempts: [EphemeralProgramAttempt!]!
 }

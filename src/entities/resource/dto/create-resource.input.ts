@@ -1,4 +1,7 @@
-import { InputType } from '@nestjs/graphql';
+import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
-export class CreateResourceInput {}
+export class CreateResourceInput {
+  @Field(() => Int, { description: 'Example field (placeholder)' })
+  exampleField: number;
+}
