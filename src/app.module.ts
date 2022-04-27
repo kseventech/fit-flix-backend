@@ -11,6 +11,9 @@ import dotenv from 'dotenv';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './entities/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CategoryModule } from './entities/category/category.module';
+import { ProgramModule } from './entities/program/program.module';
+import { ResourceModule } from './entities/resource/resource.module';
 import ORMConfig from './config/ormconfig';
 
 dotenv.config({});
@@ -37,6 +40,9 @@ dotenv.config({});
     AuthModule,
     UserModule,
     TypeOrmModule.forRoot(ORMConfig),
+    CategoryModule,
+    ProgramModule,
+    ResourceModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],
