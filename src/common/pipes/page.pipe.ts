@@ -1,9 +1,8 @@
-import { PipeTransform, Injectable, BadRequestException, ArgumentMetadata } from '@nestjs/common';
+import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class PagePipe implements PipeTransform {
-  transform(value: any, metadata: ArgumentMetadata) {
-    if (metadata.data !== 'page') return value;
+  transform(value: number) {
     if (value < 0) throw new BadRequestException('Page can not be negative');
     if (value > 0) {
       return value - 1;
