@@ -60,7 +60,7 @@ export class UserResolver {
   // @UseGuards(UserGuard)
   @Query(() => Boolean, { name: 'supportTicket' })
   support(
-    @Args({ name: 'email', nullable: false, type: () => String }) email: string,
+    @Args({ name: 'userEmail', nullable: false, type: () => String }) email: string,
     @Args({ name: 'message', nullable: false, type: () => String }) message: string,
     @Args({ name: 'issue', nullable: false, type: () => String }) issue: string,
   ) {
