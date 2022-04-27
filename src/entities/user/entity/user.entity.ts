@@ -18,52 +18,52 @@ export class User extends Base {
   @Column({ type: 'varchar', nullable: false })
   firebase_id: string;
 
-  @Field(() => String, { nullable: false })
-  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   first_name: string;
 
-  @Field(() => String, { nullable: false })
-  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   last_name: string;
 
-  @Field(() => String, { nullable: false })
-  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   phone_number: string;
 
-  @Field(() => String, { nullable: false })
-  @Column({ type: 'enum', enum: [AccountStatus.Active, AccountStatus.Blocked], nullable: false })
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'enum', enum: [AccountStatus.Active, AccountStatus.Blocked], nullable: true })
   status: string;
 
   @Field(() => String, { nullable: false })
   @Column({ type: 'enum', enum: [Role.Admin, Role.User], nullable: false })
   role: string;
 
-  @Field(() => String, { nullable: false })
-  @Column({ type: 'varchar', nullable: false })
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   avatar_url: string;
 
-  @Field(() => Int, { nullable: false })
-  @Column({ type: 'integer', nullable: false })
+  @Field(() => Int, { nullable: true })
+  @Column({ type: 'integer', nullable: true })
   age: number;
 
-  @Field(() => Float, { nullable: false })
-  @Column({ type: 'float', nullable: false })
+  @Field(() => Float, { nullable: true })
+  @Column({ type: 'float', nullable: true })
   height: number;
 
-  @Field(() => Float, { nullable: false })
-  @Column({ type: 'float', nullable: false })
+  @Field(() => Float, { nullable: true })
+  @Column({ type: 'float', nullable: true })
   weight: number;
 
-  @Field(() => String, { nullable: false })
-  @Column({ type: 'enum', enum: [Gender.Male, Gender.Femaile], nullable: false })
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'enum', enum: [Gender.Male, Gender.Femaile], nullable: true })
   gender: string;
 
-  @Field(() => Float, { nullable: false })
-  @Column({ type: 'float', nullable: false })
+  @Field(() => Float, { nullable: true })
+  @Column({ type: 'float', nullable: true })
   goal_weight: number;
 
-  @Field(() => Boolean, { nullable: false })
-  @Column({ type: 'boolean', nullable: false })
+  @Field(() => Boolean, { nullable: true })
+  @Column({ type: 'boolean', nullable: true })
   has_rated_app: boolean;
 
   // relations

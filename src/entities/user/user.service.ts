@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from 'src/common/enums/account-role.enum';
 import { FirebaseAuthService } from 'src/services/firebase/firebase.service';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
@@ -21,9 +22,12 @@ export class UserService {
   }
 
   async create(context: any) {
-    console.log(context);
-    // const user = this.userRepo.create({ email: context.req.user.email, firebaseId: context.req.user.uid });
-    // return await this.userRepo.save(user);
+    const user = this.userRepo.create({
+      email: context.req.user.email,
+      firebase_id: context.req.user.uid,
+      role: Role.User,
+    });
+    return await this.userRepo.save(user);
   }
 
   async getUsers(page: number, limit: number) {
