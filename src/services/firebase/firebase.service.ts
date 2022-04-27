@@ -23,11 +23,19 @@ export class FirebaseAuthService {
     }
   }
 
-  async setClaims(uid: string, isAdmin: boolean) {
+  async setClaims(uid: string, role: string) {
     try {
-      await this.admin.auth().setCustomUserClaims(uid, { admin: isAdmin });
+      await this.admin.auth().setCustomUserClaims(uid, { role });
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  async removeUser(uid: string) {
+    try {
+      return await this.admin.auth().deleteUser(uid);
+    } catch (error) {
+      throw new NotFoundException(`Firebase user with id [${uid}] not found`);
     }
   }
 }
