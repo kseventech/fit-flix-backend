@@ -167,7 +167,7 @@ type Query {
   getHello: String!
   me: User!
   getUsers(page: Float!, limit: Float!): UsersFindAndCount!
-  supportTicket(email: String!, message: String!, issue: String!): Boolean!
+  supportTicket(userEmail: String!, message: String!, issue: String!): Boolean!
   categories: [Category!]!
   category(id: String!): Category!
   programs: [Program!]!
@@ -177,7 +177,7 @@ type Query {
 
 type Mutation {
   createFirebaseUser(email: String!, password: String!): UserRecord!
-  setFirebaseUserRole(uid: String!, role: String!): Boolean!
+  setRole(id: String!, role: String!): User!
   createUser: User!
   removeUser(id: String!): Boolean!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!

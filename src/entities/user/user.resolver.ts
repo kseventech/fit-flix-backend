@@ -22,12 +22,12 @@ export class UserResolver {
   }
 
   @UseGuards(AdminGuard)
-  @Mutation(() => Boolean, { name: 'setFirebaseUserRole' })
-  setFirebaseAdmin(
-    @Args({ name: 'uid', nullable: false, type: () => String }) uid: string,
+  @Mutation(() => User, { name: 'setRole' })
+  setRole(
+    @Args({ name: 'id', nullable: false, type: () => String }, uuidValidationPipe) id: string,
     @Args({ name: 'role', nullable: false, type: () => String }, roleValidationPipe) role: string,
   ) {
-    return this.userService.setFirebaseAdmin(uid, role);
+    return this.userService.setRole(id, role);
   }
 
   @UseGuards(UserGuard)

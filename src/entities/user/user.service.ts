@@ -18,9 +18,12 @@ export class UserService {
     return await this.firebaseAuthService.createUser(email, password);
   }
 
-  async setFirebaseAdmin(uid: string, role: string) {
-    await this.firebaseAuthService.setClaims(uid, role);
-    return true;
+  async setRole(id: string, role: string) {
+    const user = await this.userRepo.findOne({ id });
+    await this.firebaseAuthService.setClaims(user.firebase_id, role);
+    user.role = role;
+    await this.userRepo.update(id, user);
+    return await this.userRepo.findOne({ id });
   }
 
   async create(context: any) {
