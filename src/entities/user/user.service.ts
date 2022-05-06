@@ -56,7 +56,7 @@ export class UserService {
   async remove(id: string, user: IFirebaseDecodedUser) {
     const found = await this.userRepo.findOne({ id });
     if (!found) throw new NotFoundException('User not found');
-    if (found.firebase_id !== user.uid && user.role !== 'Admin') throw new ForbiddenException();
+    if (found.firebase_id !== user.uid && found.role !== Role.Admin) throw new ForbiddenException();
     await Promise.all([this.userRepo.delete(id), this.firebaseAuthService.removeUser(found.firebase_id)]);
     return true;
   }
