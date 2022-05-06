@@ -30,6 +30,16 @@ export class UserResolver {
     return this.userService.setRole(id, role);
   }
 
+  @UseGuards(AdminGuard)
+  @Mutation(() => User, { name: 'createUserByAdmin' })
+  createUserByAdmin(
+    @Args({ name: 'email', nullable: false, type: () => String }) email: string,
+    @Args({ name: 'password', nullable: false, type: () => String }) password: string,
+    @Args({ name: 'role', nullable: false, type: () => String }, roleValidationPipe) role: string,
+  ) {
+    return this.userService.createUserByAdmin(email, password, role);
+  }
+
   @UseGuards(UserGuard)
   @Query(() => User, { name: 'me' })
   getOne(@Context() context: any) {
@@ -53,8 +63,11 @@ export class UserResolver {
 
   @UseGuards(FirebaseGuard)
   @Mutation(() => Boolean, { name: 'removeUser' })
-  remove(@Args({ name: 'id', nullable: false, type: () => String }, uuidValidationPipe) id: string) {
-    return this.userService.remove(id);
+  remove(
+    @Args({ name: 'id', nullable: false, type: () => String }, uuidValidationPipe) id: string,
+    @Context() context: any,
+  ) {
+    return this.userService.remove(id, context.req.user);
   }
 
   // @UseGuards(UserGuard)

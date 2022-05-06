@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/common/enums/account-role.enum';
 import { FirebaseAuthService } from 'src/services/firebase/firebase.service';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { EmailService } from 'src/services/email/email.service';
+import { IFirebaseDecodedUser } from 'src/common/interface/firebase-decoded-user.inteface';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,7 @@ export class UserService {
 
   async setRole(id: string, role: string) {
     const user = await this.userRepo.findOne({ id });
+    if (!user) throw new NotFoundException();
     await this.firebaseAuthService.setClaims(user.firebase_id, role);
     user.role = role;
     await this.userRepo.update(id, user);
@@ -46,14 +48,21 @@ export class UserService {
     };
   }
 
-  async remove(id: string) {
-    const user = await this.userRepo.findOne({ id });
-    if (!user) throw new NotFoundException();
-    await Promise.all([this.userRepo.delete(id), this.firebaseAuthService.removeUser(user.firebase_id)]);
+  async remove(id: string, user: IFirebaseDecodedUser) {
+    const found = await this.userRepo.findOne({ id });
+    if (!found) throw new NotFoundException('User not found');
+    if (found.firebase_id !== user.uid && user.role !== 'Admin') throw new ForbiddenException();
+    await Promise.all([this.userRepo.delete(id), this.firebaseAuthService.removeUser(found.firebase_id)]);
     return true;
   }
 
   async support(email: string, message: string, issue: string) {
     return await this.emailService.sendEmail(email, message, issue);
+  }
+
+  async createUserByAdmin(email: string, password: string, role: string) {
+    const firebaseUser = await this.firebaseAuthService.createUser(email, password);
+    const user = this.userRepo.create({ email, firebase_id: firebaseUser.uid, role });
+    return await this.userRepo.save(user);
   }
 }
