@@ -21,7 +21,7 @@ export class UserResolver {
     return this.userService.createFirebaseUser(email, password);
   }
 
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   @Mutation(() => User, { name: 'setRole' })
   setRole(
     @Args({ name: 'id', nullable: false, type: () => String }, uuidValidationPipe) id: string,
@@ -34,10 +34,9 @@ export class UserResolver {
   @Mutation(() => User, { name: 'createUserByAdmin' })
   createUserByAdmin(
     @Args({ name: 'email', nullable: false, type: () => String }) email: string,
-    @Args({ name: 'password', nullable: false, type: () => String }) password: string,
     @Args({ name: 'role', nullable: false, type: () => String }, roleValidationPipe) role: string,
   ) {
-    return this.userService.createUserByAdmin(email, password, role);
+    return this.userService.createUserByAdmin(email, role);
   }
 
   @UseGuards(UserGuard)

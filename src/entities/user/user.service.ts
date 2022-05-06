@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { EmailService } from 'src/services/email/email.service';
 import { IFirebaseDecodedUser } from 'src/common/interface/firebase-decoded-user.inteface';
+import { customAlphabet } from 'nanoid';
 
 @Injectable()
 export class UserService {
@@ -15,8 +16,12 @@ export class UserService {
     private emailService: EmailService,
   ) {}
 
+  private possbileChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  private nanoLength = 8;
+
   async createFirebaseUser(email: string, password: string) {
-    return await this.firebaseAuthService.createUser(email, password);
+    return await this.firebaseAuthService.createUser(email, password, false);
   }
 
   async setRole(id: string, role: string) {
@@ -60,9 +65,11 @@ export class UserService {
     return await this.emailService.sendEmail(email, message, issue);
   }
 
-  async createUserByAdmin(email: string, password: string, role: string) {
-    const firebaseUser = await this.firebaseAuthService.createUser(email, password);
+  async createUserByAdmin(email: string, role: string) {
+    const randomPassword = customAlphabet(this.possbileChars, this.nanoLength)();
+    const firebaseUser = await this.firebaseAuthService.createUser(email, randomPassword, true);
     const user = this.userRepo.create({ email, firebase_id: firebaseUser.uid, role });
+    await this.firebaseAuthService.sendResetPasswordEmail(email);
     return await this.userRepo.save(user);
   }
 }
