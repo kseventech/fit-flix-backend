@@ -2,6 +2,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException 
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExtractJwt } from 'passport-jwt';
+import { Role } from 'src/common/enums/account-role.enum';
 import { User } from 'src/entities/user/entity/user.entity';
 import { FirebaseAuthStrategy } from 'src/services/firebase/firebase.strategy';
 import { Repository } from 'typeorm';
@@ -16,8 +17,8 @@ export class AdminStrategy extends PassportStrategy(FirebaseAuthStrategy, 'admin
 
   override async validate(payload: any) {
     if (!payload.email_verified) throw new BadRequestException('Email not verified');
-    if (!payload.admin) throw new ForbiddenException();
     const user = await this.userRepo.findOne({ firebase_id: payload.uid });
+    if (user.role !== Role.Admin) throw new ForbiddenException();
     if (!user) throw new NotFoundException('Admin data in db not found');
     return user;
   }

@@ -178,7 +178,7 @@ type Query {
 type Mutation {
   createFirebaseUser(email: String!, password: String!): UserRecord!
   setRole(id: String!, role: String!): User!
-  createUserByAdmin(email: String!, password: String!, role: String!): User!
+  createUserByAdmin(email: String!, role: String!): User!
   createUser: User!
   removeUser(id: String!): Boolean!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
