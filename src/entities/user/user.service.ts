@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/common/enums/account-role.enum';
 import { FirebaseAuthService } from 'src/services/firebase/firebase.service';
@@ -56,7 +56,8 @@ export class UserService {
   async remove(id: string, user: IFirebaseDecodedUser) {
     const found = await this.userRepo.findOne({ id });
     if (!found) throw new NotFoundException('User not found');
-    if (found.firebase_id !== user.uid && found.role !== Role.Admin) throw new ForbiddenException();
+    console.log(user.uid);
+    // if (found.firebase_id !== user.uid && found.role !== Role.Admin) throw new ForbiddenException();
     await Promise.all([this.userRepo.delete(id), this.firebaseAuthService.removeUser(found.firebase_id)]);
     return true;
   }

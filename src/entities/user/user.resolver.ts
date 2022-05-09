@@ -60,7 +60,7 @@ export class UserResolver {
     return this.userService.getUsers(page, limit);
   }
 
-  // @UseGuards(FirebaseGuard)
+  @UseGuards(FirebaseGuard)
   @Mutation(() => Boolean, { name: 'removeUser' })
   remove(
     @Args({ name: 'id', nullable: false, type: () => String }, uuidValidationPipe) id: string,
