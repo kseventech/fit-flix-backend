@@ -6,7 +6,7 @@ import { FirebaseGuard } from 'src/auth/guards/firebase-auth.guard';
 import { User } from './entity/user.entity';
 import { UsersFindAndCount } from './dto/user-find-and-count.dto';
 import { limitValidationPipe, pageValidationPipe, roleValidationPipe, uuidValidationPipe } from 'src/common/pipes';
-import { AdminGuard } from 'src/auth/guards/firebase-adminr.guard';
+// import { AdminGuard } from 'src/auth/guards/firebase-adminr.guard';
 import { UserGuard } from 'src/auth/guards/firebase-user.guard';
 
 @Resolver()
@@ -30,7 +30,7 @@ export class UserResolver {
     return this.userService.setRole(id, role);
   }
 
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   @Mutation(() => User, { name: 'createUserByAdmin' })
   createUserByAdmin(
     @Args({ name: 'email', nullable: false, type: () => String }) email: string,
@@ -51,7 +51,7 @@ export class UserResolver {
     return this.userService.create(context);
   }
 
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   @Query(() => UsersFindAndCount, { name: 'getUsers' })
   getUsers(
     @Args({ name: 'page', nullable: false, type: () => Number }, pageValidationPipe) page: number,
@@ -60,7 +60,7 @@ export class UserResolver {
     return this.userService.getUsers(page, limit);
   }
 
-  @UseGuards(FirebaseGuard)
+  // @UseGuards(FirebaseGuard)
   @Mutation(() => Boolean, { name: 'removeUser' })
   remove(
     @Args({ name: 'id', nullable: false, type: () => String }, uuidValidationPipe) id: string,
