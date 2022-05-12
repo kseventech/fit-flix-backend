@@ -1,5 +1,5 @@
 import { Field, Float, InputType } from '@nestjs/graphql';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, Matches } from 'class-validator';
 
 @InputType()
 export class UpdateUserByUserInput {
@@ -11,7 +11,7 @@ export class UpdateUserByUserInput {
   @Field(() => Float, { nullable: false })
   weight: number;
 
-  @IsString()
+  @Matches(/^(Male|Female)$/, { message: 'Invalid gender type, possible types are [Male,Female]' })
   @Field(() => String, { nullable: false })
   gender: string;
 
