@@ -81,12 +81,11 @@ export class UserResolver {
   }
 
   @UseGuards(UserGuard)
-  @Mutation(() => User, { name: 'updateUserByUser' })
+  @Mutation(() => User, { name: 'updateProfile' })
   updateUserByUser(
-    @Args('id', uuidValidationPipe) id: string,
     @Args('updateUserByUserInput') updateUserByUserInput: UpdateUserByUserInput,
     @Context() context: any,
   ) {
-    return this.userService.updateUserByUser(id, context.req.user, updateUserByUserInput);
+    return this.userService.updateUserByUser(context.req.user, updateUserByUserInput);
   }
 }

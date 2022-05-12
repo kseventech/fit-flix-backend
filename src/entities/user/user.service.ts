@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/common/enums/account-role.enum';
 import { FirebaseAuthService } from 'src/services/firebase/firebase.service';
@@ -75,10 +75,9 @@ export class UserService {
     return await this.userRepo.save(user);
   }
 
-  async updateUserByUser(id: string, user: User, updateUserByUserInput: UpdateUserByUserInput) {
-    if (id !== user.id) throw new ForbiddenException();
+  async updateUserByUser(user: User, updateUserByUserInput: UpdateUserByUserInput) {
     await this.userRepo.update(
-      { id },
+      { id: user.id },
       {
         date_of_birth: updateUserByUserInput.date_of_birth,
         gender: updateUserByUserInput.gender,
@@ -86,6 +85,6 @@ export class UserService {
         weight: updateUserByUserInput.weight,
       },
     );
-    return await this.userRepo.findOne({ id });
+    return await this.userRepo.findOne({ id: user.id });
   }
 }
