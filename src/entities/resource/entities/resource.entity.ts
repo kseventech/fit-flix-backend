@@ -1,22 +1,17 @@
-import { ObjectType, Field, Float } from '@nestjs/graphql';
+import { ObjectType, Field, Float, Int } from '@nestjs/graphql';
 import { Status } from 'src/common/enums/category-status.enum';
-import { ResourceMediaType } from 'src/common/enums/resouce-media-type.enum';
 import { ResourceProvider } from 'src/common/enums/resource-provider.enum';
 import { ResourceType } from 'src/common/enums/resource-type.enum';
 import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { GraphQLJSONObject } from 'graphql-type-json';
-import { ProgramResource } from 'src/entities/program/entities/program-resources.entity';
 import { Base } from 'src/common/objects/base.entity';
 import { Tag } from 'src/entities/tag/tag.entity';
-import { Traning } from 'src/entities/traning/traning.entity';
+import { Equpment } from 'src/entities/equpment/entities/equpment.entity';
+import { TrainingDayResources } from 'src/entities/traning/training-resources.entity';
 
 @Entity({ name: 'resources' })
 @ObjectType()
 export class Resource extends Base {
-  @Column({ type: 'enum', enum: [ResourceMediaType.Video], nullable: false })
-  @Field(() => String, { nullable: false })
-  media_type: string;
-
   @Column({ type: 'varchar', nullable: false })
   @Field(() => String, { nullable: false })
   title: string;
@@ -57,17 +52,39 @@ export class Resource extends Base {
   @Field(() => Float, { nullable: false })
   intensity_level: number;
 
+  @Column({ type: 'float', nullable: false })
+  @Field(() => Float, { nullable: false })
+  met: number;
+
+  @Column({ type: 'float', nullable: false })
+  @Field(() => Float, { nullable: false })
+  reps: number;
+
+  @Column({ type: 'enum', enum: [], nullable: false })
+  @Field(() => String, { nullable: false })
+  video_type: string;
+
+  @Column({ type: 'enum', enum: [], nullable: false })
+  @Field(() => String, { nullable: false })
+  exercise_type: string;
+
+  @Column({ type: 'integer', nullable: true })
+  @Field(() => Int, { nullable: true })
+  rpe: number;
+
   // relations
 
-  @Field(() => [ProgramResource], { nullable: false })
-  @OneToMany(() => ProgramResource, (programResource) => programResource.program, { onDelete: 'CASCADE' })
-  programs: ProgramResource[];
+  @Field(() => [Equpment], { nullable: false })
+  @ManyToMany(() => Equpment, (equpment) => equpment.id, { onDelete: 'CASCADE' })
+  equipments: Equpment[];
 
   @Field(() => [Tag], { nullable: false })
   @ManyToMany(() => Tag, (tag) => tag.id, { onDelete: 'CASCADE' })
   tags: Tag[];
 
-  @Field(() => [Traning], { nullable: false })
-  @OneToMany(() => Traning, (traning) => traning.resource, { onDelete: 'CASCADE' })
-  tranings: Traning[];
+  @Field(() => [TrainingDayResources], { nullable: false })
+  @OneToMany(() => TrainingDayResources, (trainingDayResources) => trainingDayResources.resource, {
+    onDelete: 'CASCADE',
+  })
+  training_days_resources: TrainingDayResources[];
 }
