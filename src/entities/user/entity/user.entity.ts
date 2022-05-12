@@ -69,11 +69,11 @@ export class User extends Base {
   // relations
   @Field(() => [ProgramAttempt], { nullable: false })
   @OneToMany(() => ProgramAttempt, (programAttempt) => programAttempt.account_id, { onDelete: 'CASCADE' })
-  programAttempts: ProgramAttempt[];
+  program_attempts: ProgramAttempt[];
 
   @Field(() => [EphemeralProgramAttempt], { nullable: false })
-  @OneToMany(() => EphemeralProgramAttempt, (EphemeralProgramAttempt) => EphemeralProgramAttempt.account_id, {
+  @OneToMany(() => EphemeralProgramAttempt, (ephemeral_program_attempts) => ephemeral_program_attempts.account_id, {
     onDelete: 'CASCADE',
   })
-  ephemeralProgramAttempts: EphemeralProgramAttempt[];
+  ephemeral_program_attempts: EphemeralProgramAttempt[];
 }
