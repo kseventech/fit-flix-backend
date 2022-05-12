@@ -7,7 +7,7 @@ import { Base } from 'src/common/objects/base.entity';
 import { Category } from 'src/entities/category/entities/category.entity';
 import { Column, Entity, JoinTable, ManyToOne, OneToMany } from 'typeorm';
 import { ProgramAttempt } from './program-attempts.entity';
-import { ProgramResource } from './program-resources.entity';
+import { ProgramTrainingDay } from './program-training-day.entity';
 
 @ObjectType()
 @Entity({ name: 'programs' })
@@ -48,6 +48,26 @@ export class Program extends Base {
   @Field(() => String, { nullable: false })
   section: string;
 
+  @Column({ type: 'float', nullable: false })
+  @Field(() => Float, { nullable: false })
+  intensity_level: string;
+
+  @Column({ type: 'float', nullable: false })
+  @Field(() => Float, { nullable: false })
+  total_met: string;
+
+  @Column({ type: 'float', nullable: false })
+  @Field(() => Float, { nullable: false })
+  excercise_type: string;
+
+  @Column({ type: 'enum', enum: [], nullable: false })
+  @Field(() => String, { nullable: false })
+  gender: string;
+
+  @Column({ type: 'enum', enum: [], nullable: false })
+  @Field(() => String, { nullable: false })
+  purpose: string;
+
   // relations
 
   @Field(() => Category, { nullable: false })
@@ -55,11 +75,11 @@ export class Program extends Base {
   @JoinTable()
   category: Category;
 
-  @Field(() => [ProgramResource], { nullable: false })
-  @OneToMany(() => ProgramResource, (programResource) => programResource.resource, { onDelete: 'CASCADE' })
-  resources: ProgramResource[];
+  @Field(() => [ProgramTrainingDay], { nullable: false })
+  @OneToMany(() => ProgramTrainingDay, (programTrainingDay) => programTrainingDay.program, { onDelete: 'CASCADE' })
+  program_training_days: ProgramTrainingDay[];
 
   @Field(() => [ProgramAttempt], { nullable: false })
   @OneToMany(() => ProgramAttempt, (programAttempt) => programAttempt.program, { onDelete: 'CASCADE' })
-  programAttempts: ProgramAttempt[];
+  program_attempts: ProgramAttempt[];
 }

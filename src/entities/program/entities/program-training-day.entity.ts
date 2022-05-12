@@ -1,22 +1,22 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-import { Resource } from 'src/entities/resource/entities/resource.entity';
+import { TrainingDay } from 'src/entities/traning/traning-day.entity';
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { Program } from './program.entity';
 
 @ObjectType()
-@Entity({ name: 'programs_resources' })
-export class ProgramResource {
+@Entity({ name: 'program_training_days' })
+export class ProgramTrainingDay {
   @Field(() => String)
   @PrimaryColumn({ type: 'uuid', nullable: false })
   program_id: string;
 
   @Field(() => String)
   @PrimaryColumn({ type: 'uuid', nullable: false })
-  resource_id: string;
+  training_day_id: string;
 
   @Column({ type: 'varchar', nullable: false })
   @Field(() => String, { nullable: false })
-  playlist_order: string;
+  training_day_order: string;
 
   @Field(() => Date, { nullable: true })
   @CreateDateColumn({ type: 'timestamp', nullable: true })
@@ -29,12 +29,12 @@ export class ProgramResource {
   // relations
 
   @Field(() => Program, { nullable: false })
-  @ManyToOne(() => Program, (program) => program.resources, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Program, (program) => program.program_training_days, { onDelete: 'CASCADE' })
   @JoinTable()
   program: Program;
 
-  @Field(() => Resource, { nullable: false })
-  @ManyToOne(() => Resource, (resource) => resource.programs, { onDelete: 'CASCADE' })
+  @Field(() => TrainingDay, { nullable: false })
+  @ManyToOne(() => TrainingDay, (trainingDay) => trainingDay.program_training_day, { onDelete: 'CASCADE' })
   @JoinTable()
-  resource: Resource;
+  training_day: TrainingDay;
 }
