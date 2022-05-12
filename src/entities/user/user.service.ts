@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/common/enums/account-role.enum';
 import { FirebaseAuthService } from 'src/services/firebase/firebase.service';
@@ -7,6 +7,7 @@ import { User } from './entity/user.entity';
 import { EmailService } from 'src/services/email/email.service';
 import { IFirebaseDecodedUser } from 'src/common/interface/firebase-decoded-user.inteface';
 import { customAlphabet } from 'nanoid';
+import { UpdateUserByUserInput } from './dto/user-update.object';
 
 @Injectable()
 export class UserService {
@@ -72,5 +73,19 @@ export class UserService {
     const user = this.userRepo.create({ email, firebase_id: firebaseUser.uid, role });
     await this.firebaseAuthService.sendResetPasswordEmail(email);
     return await this.userRepo.save(user);
+  }
+
+  async updateUserByUser(id: string, user: User, updateUserByUserInput: UpdateUserByUserInput) {
+    if (id !== user.id) throw new ForbiddenException();
+    await this.userRepo.update(
+      { id },
+      {
+        date_of_birth: updateUserByUserInput.date_of_birth,
+        gender: updateUserByUserInput.gender,
+        height: updateUserByUserInput.height,
+        weight: updateUserByUserInput.weight,
+      },
+    );
+    return await this.userRepo.findOne({ id });
   }
 }

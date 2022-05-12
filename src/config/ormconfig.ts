@@ -12,11 +12,11 @@ const ORMConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   entities: ['dist/**/*.entity.js'],
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
+  // extra: {
+  //   ssl: {
+  //     rejectUnauthorized: false,
+  //   },
+  // },
   synchronize: false,
   migrations: ['dist/db/migrations/*.js'],
   cli: {

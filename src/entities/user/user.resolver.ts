@@ -8,6 +8,7 @@ import { UsersFindAndCount } from './dto/user-find-and-count.dto';
 import { limitValidationPipe, pageValidationPipe, roleValidationPipe, uuidValidationPipe } from 'src/common/pipes';
 // import { AdminGuard } from 'src/auth/guards/firebase-adminr.guard';
 import { UserGuard } from 'src/auth/guards/firebase-user.guard';
+import { UpdateUserByUserInput } from './dto/user-update.object';
 
 @Resolver()
 export class UserResolver {
@@ -60,7 +61,7 @@ export class UserResolver {
     return this.userService.getUsers(page, limit);
   }
 
-  @UseGuards(FirebaseGuard)
+  // @UseGuards(FirebaseGuard)
   @Mutation(() => Boolean, { name: 'removeUser' })
   remove(
     @Args({ name: 'id', nullable: false, type: () => String }, uuidValidationPipe) id: string,
@@ -77,5 +78,15 @@ export class UserResolver {
     @Args({ name: 'issue', nullable: false, type: () => String }) issue: string,
   ) {
     return this.userService.support(email, message, issue);
+  }
+
+  @UseGuards(UserGuard)
+  @Mutation(() => User, { name: 'updateUserByUser' })
+  updateUserByUser(
+    @Args('id', uuidValidationPipe) id: string,
+    @Args('updateUserByUserInput') updateUserByUserInput: UpdateUserByUserInput,
+    @Context() context: any,
+  ) {
+    return this.userService.updateUserByUser(id, context.req.user, updateUserByUserInput);
   }
 }

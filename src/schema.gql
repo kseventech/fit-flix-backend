@@ -25,11 +25,19 @@ type Tag {
   resources: [Resource!]!
 }
 
+type Equpment {
+  id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  title: String!
+  icon: String!
+  resource: [Resource!]!
+}
+
 type Resource {
   id: String!
   created_at: DateTime
   updated_at: DateTime
-  media_type: String!
   title: String!
   url: String!
   description: String!
@@ -40,9 +48,14 @@ type Resource {
   type: String!
   additional_info: JSONObject!
   intensity_level: Float!
-  programs: [ProgramResource!]!
+  met: Float!
+  reps: Float!
+  video_type: String!
+  exercise_type: String!
+  rpe: Int
+  equipments: [Equpment!]!
   tags: [Tag!]!
-  tranings: [Traning!]!
+  training_days_resources: [TrainingDayResources!]!
 }
 
 """
@@ -50,14 +63,35 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 """
 scalar JSONObject
 
-type ProgramResource {
-  program_id: String!
+type TrainingDayResources {
+  training_day_id: String!
   resource_id: String!
-  playlist_order: String!
+  resource_order: String!
+  pause: String!
+  training_day: TrainingDay!
+  resource: Resource!
+}
+
+type TrainingDay {
+  id: String!
+  created_at: DateTime
+  updated_at: DateTime
+  title: String!
+  intensity_level: Float!
+  video_type: String!
+  excercise_type: String!
+  training_days_resources: [TrainingDayResources!]!
+  program_training_day: [ProgramTrainingDay!]!
+}
+
+type ProgramTrainingDay {
+  program_id: String!
+  training_day_id: String!
+  training_day_order: String!
   created_at: DateTime
   updated_at: DateTime
   program: Program!
-  resource: Resource!
+  training_day: TrainingDay!
 }
 
 type Program {
@@ -72,9 +106,14 @@ type Program {
   duration: String!
   duration_unit: Float!
   section: String!
+  intensity_level: Float!
+  total_met: Float!
+  excercise_type: Float!
+  gender: String!
+  purpose: String!
   category: Category!
-  resources: [ProgramResource!]!
-  programAttempts: [ProgramAttempt!]!
+  program_training_days: [ProgramTrainingDay!]!
+  program_attempts: [ProgramAttempt!]!
 }
 
 type ProgramAttempt {
@@ -85,28 +124,27 @@ type ProgramAttempt {
   start_date: DateTime!
   account_id: User!
   program: Program!
-  tranings: [Traning!]!
+  tranings: [Training!]!
 }
 
-type Traning {
+type Training {
   id: String!
   created_at: DateTime
   updated_at: DateTime
   status: String!
   start_date: DateTime!
-  resource: Resource!
-  programAttempt: ProgramAttempt!
-  ephemeralProgramAttempt: EphemeralProgramAttempt!
+  program_attempt: ProgramAttempt!
+  ephemeral_program_attempts: [EphemeralProgramAttempt!]!
 }
 
 type EphemeralProgramAttempt {
-  account_id: String!
-  status: String!
-  start_date: DateTime!
+  id: String!
   created_at: DateTime
   updated_at: DateTime
-  account: User!
-  tranings: [Traning!]!
+  status: String!
+  start_date: DateTime!
+  account_id: User!
+  traning: Training!
 }
 
 type User {
@@ -127,8 +165,9 @@ type User {
   gender: String
   goal_weight: Float
   has_rated_app: Boolean
-  programAttempts: [ProgramAttempt!]!
-  ephemeralProgramAttempts: [EphemeralProgramAttempt!]!
+  date_of_birth: DateTime
+  program_attempts: [ProgramAttempt!]!
+  ephemeral_program_attempts: [EphemeralProgramAttempt!]!
 }
 
 type UserInfo {
@@ -173,6 +212,7 @@ type Query {
   programs: [Program!]!
   program(id: String!): Program!
   resource(id: Int!): Resource!
+  equpment(id: Int!): Equpment!
 }
 
 type Mutation {
@@ -181,6 +221,7 @@ type Mutation {
   createUserByAdmin(email: String!, role: String!): User!
   createUser: User!
   removeUser(id: String!): Boolean!
+  updateUserByUser(id: String!, updateUserByUserInput: UpdateUserByUserInput!): User!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   removeCategory(id: String!): Category!
@@ -190,6 +231,16 @@ type Mutation {
   createResource(createResourceInput: CreateResourceInput!): Resource!
   updateResource(updateResourceInput: UpdateResourceInput!): Resource!
   removeResource(id: Int!): Resource!
+  createEqupment(createEqupmentInput: CreateEqupmentInput!): Equpment!
+  updateEqupment(updateEqupmentInput: UpdateEqupmentInput!): Equpment!
+  removeEqupment(id: Int!): Equpment!
+}
+
+input UpdateUserByUserInput {
+  height: Float!
+  weight: Float!
+  gender: String!
+  date_of_birth: String!
 }
 
 input CreateCategoryInput {
@@ -222,6 +273,17 @@ input CreateResourceInput {
 }
 
 input UpdateResourceInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateEqupmentInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateEqupmentInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!

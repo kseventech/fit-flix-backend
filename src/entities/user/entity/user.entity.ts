@@ -66,6 +66,10 @@ export class User extends Base {
   @Column({ type: 'boolean', nullable: true })
   has_rated_app: boolean;
 
+  @Field(() => Date, { nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
+  date_of_birth: Date;
+
   // relations
   @Field(() => [ProgramAttempt], { nullable: false })
   @OneToMany(() => ProgramAttempt, (programAttempt) => programAttempt.account_id, { onDelete: 'CASCADE' })
