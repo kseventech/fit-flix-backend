@@ -8,7 +8,7 @@ import { UsersFindAndCount } from './dto/user-find-and-count.dto';
 import { limitValidationPipe, pageValidationPipe, roleValidationPipe, uuidValidationPipe } from 'src/common/pipes';
 // import { AdminGuard } from 'src/auth/guards/firebase-adminr.guard';
 import { UserGuard } from 'src/auth/guards/firebase-user.guard';
-import { UpdateUserByUserInput } from './dto/user-update.object';
+import { UpdateProfileInput } from './dto/user-update.object';
 
 @Resolver()
 export class UserResolver {
@@ -82,10 +82,7 @@ export class UserResolver {
 
   @UseGuards(UserGuard)
   @Mutation(() => User, { name: 'updateProfile' })
-  updateUserByUser(
-    @Args('updateUserByUserInput') updateUserByUserInput: UpdateUserByUserInput,
-    @Context() context: any,
-  ) {
-    return this.userService.updateUserByUser(context.req.user, updateUserByUserInput);
+  updateUserByUser(@Args('updateProfileInput') updateProfileInput: UpdateProfileInput, @Context() context: any) {
+    return this.userService.updateUserByUser(context.req.user, updateProfileInput);
   }
 }

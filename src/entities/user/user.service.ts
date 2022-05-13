@@ -7,7 +7,7 @@ import { User } from './entity/user.entity';
 import { EmailService } from 'src/services/email/email.service';
 import { IFirebaseDecodedUser } from 'src/common/interface/firebase-decoded-user.inteface';
 import { customAlphabet } from 'nanoid';
-import { UpdateUserByUserInput } from './dto/user-update.object';
+import { UpdateProfileInput } from './dto/user-update.object';
 
 @Injectable()
 export class UserService {
@@ -75,7 +75,7 @@ export class UserService {
     return await this.userRepo.save(user);
   }
 
-  async updateUserByUser(user: User, updateUserByUserInput: UpdateUserByUserInput) {
+  async updateUserByUser(user: User, updateUserByUserInput: UpdateProfileInput) {
     await this.userRepo.update(
       { id: user.id },
       {

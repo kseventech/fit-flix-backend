@@ -2,7 +2,7 @@ import { Field, Float, InputType } from '@nestjs/graphql';
 import { IsDate, IsNumber, Matches } from 'class-validator';
 
 @InputType()
-export class UpdateUserByUserInput {
+export class UpdateProfileInput {
   @IsNumber()
   @Field(() => Float, { nullable: false })
   height: number;
