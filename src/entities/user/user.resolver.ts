@@ -35,9 +35,12 @@ export class UserResolver {
   @Mutation(() => User, { name: 'createUserByAdmin' })
   createUserByAdmin(
     @Args({ name: 'email', nullable: false, type: () => String }) email: string,
+    @Args({ name: 'first_name', nullable: false, type: () => String }) first_name: string,
+    @Args({ name: 'last_name', nullable: false, type: () => String }) last_name: string,
+    @Args({ name: 'phone_number', nullable: true, type: () => String }) phone_number: string,
     @Args({ name: 'role', nullable: false, type: () => String }, roleValidationPipe) role: string,
   ) {
-    return this.userService.createUserByAdmin(email, role);
+    return this.userService.createUserByAdmin(email, first_name, last_name, phone_number, role);
   }
 
   @UseGuards(UserGuard)

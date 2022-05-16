@@ -67,10 +67,17 @@ export class UserService {
     return await this.emailService.sendEmail(email, message, issue);
   }
 
-  async createUserByAdmin(email: string, role: string) {
+  async createUserByAdmin(email: string, first_name: string, last_name: string, phone_number: string, role: string) {
     const randomPassword = customAlphabet(this.possbileChars, this.nanoLength)();
     const firebaseUser = await this.firebaseAuthService.createUser(email, randomPassword, true);
-    const user = this.userRepo.create({ email, firebase_id: firebaseUser.uid, role });
+    const user = this.userRepo.create({
+      email,
+      firebase_id: firebaseUser.uid,
+      role,
+      first_name,
+      last_name,
+      phone_number,
+    });
     await this.firebaseAuthService.sendResetPasswordEmail(email);
     return await this.userRepo.save(user);
   }

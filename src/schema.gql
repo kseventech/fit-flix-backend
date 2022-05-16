@@ -218,10 +218,10 @@ type Query {
 type Mutation {
   createFirebaseUser(email: String!, password: String!): UserRecord!
   setRole(id: String!, role: String!): User!
-  createUserByAdmin(email: String!, role: String!): User!
+  createUserByAdmin(email: String!, first_name: String!, last_name: String!, phone_number: String, role: String!): User!
   createUser: User!
   removeUser(id: String!): Boolean!
-  updateUserByUser(id: String!, updateUserByUserInput: UpdateUserByUserInput!): User!
+  updateProfile(updateProfileInput: UpdateProfileInput!): User!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   removeCategory(id: String!): Category!
@@ -236,7 +236,7 @@ type Mutation {
   removeEqupment(id: Int!): Equpment!
 }
 
-input UpdateUserByUserInput {
+input UpdateProfileInput {
   height: Float!
   weight: Float!
   gender: String!
