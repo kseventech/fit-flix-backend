@@ -64,13 +64,10 @@ export class UserResolver {
     return this.userService.getUsers(page, limit);
   }
 
-  // @UseGuards(FirebaseGuard)
-  @Mutation(() => Boolean, { name: 'removeUser' })
-  remove(
-    @Args({ name: 'id', nullable: false, type: () => String }, uuidValidationPipe) id: string,
-    @Context() context: any,
-  ) {
-    return this.userService.remove(id, context.req.user);
+  // @UseGuards(AdminGuard)
+  @Mutation(() => Boolean, { name: 'removeUserByAdmin' })
+  remove(@Args({ name: 'id', nullable: false, type: () => String }, uuidValidationPipe) id: string) {
+    return this.userService.remove(id);
   }
 
   // @UseGuards(UserGuard)

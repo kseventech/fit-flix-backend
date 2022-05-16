@@ -5,7 +5,6 @@ import { FirebaseAuthService } from 'src/services/firebase/firebase.service';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { EmailService } from 'src/services/email/email.service';
-import { IFirebaseDecodedUser } from 'src/common/interface/firebase-decoded-user.inteface';
 import { customAlphabet } from 'nanoid';
 import { UpdateProfileInput } from './dto/user-update.object';
 
@@ -54,11 +53,9 @@ export class UserService {
     };
   }
 
-  async remove(id: string, user: IFirebaseDecodedUser) {
+  async remove(id: string) {
     const found = await this.userRepo.findOne({ id });
     if (!found) throw new NotFoundException('User not found');
-    console.log(user.uid);
-    // if (found.firebase_id !== user.uid && found.role !== Role.Admin) throw new ForbiddenException();
     await Promise.all([this.userRepo.delete(id), this.firebaseAuthService.removeUser(found.firebase_id)]);
     return true;
   }
